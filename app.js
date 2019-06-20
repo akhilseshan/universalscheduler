@@ -56,26 +56,31 @@ app.post('/addmeeting',(req,res) => {
         time: localtime,
         status: "pending"
     }).save().then((newMeeting) => {
-        console.log('created new meeting: ', newMeeting);
+        //created new meeting
+        //console.log('created new meeting: ', newMeeting);
     });
+    //redirect back to profile page
     res.redirect('/profile');
 });
 
 //update meetings in the database
 app.post('/updatemeeting',(req,res) => {
+    //get the value from form in the html page
     var statusValue = JSON.parse(req.body.statusbutton);
-    console.log(statusValue,statusValue.id);
     if(statusValue.val == 1) {
+        //if the user press accept button
         console.log('accepted '+statusValue.id);
         Meeting.updateOne({_id: statusValue.id}, {$set: {status: "accepted"}}, (err,res) => {
             console.log('updated successfully');
         });
     }else{
+        //if the user press reject button
         console.log('rejected '+statusValue.id);
         Meeting.updateOne({_id: statusValue.id}, {$set: {status: "rejected"}}, (err,res) => {
             console.log('updated successfully');
         });
     }
+    //redirect back to profile page
     res.redirect('/profile');
 });
 
