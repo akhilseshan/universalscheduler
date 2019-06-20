@@ -48,7 +48,7 @@ app.get('/',(req,res)=>{
 app.post('/addmeeting',(req,res) => {
     var localuser1 = req.user.emailId;
     var localuser2 = req.body.user2;
-    var localtime = new Date();
+    var localtime = new Date().toUTCString;
 
     new Meeting({
         user1: localuser1,
