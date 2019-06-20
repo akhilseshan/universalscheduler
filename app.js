@@ -48,16 +48,35 @@ app.get('/',(req,res)=>{
 app.post('/addmeeting',(req,res) => {
     var localuser1 = req.user.emailId;
     var localuser2 = req.body.user2;
-    var localtime = new Date().toUTCString;
+    var localtime = new Date();
 
     new Meeting({
         user1: localuser1,
         user2: localuser2,
         time: localtime,
-        accepted: 0
+        status: "pending"
     }).save().then((newMeeting) => {
         console.log('created new meeting: ', newMeeting);
     });
+    res.redirect('/profile');
+});
+
+//update meetings in the database
+app.post('/updatemeeting',(req,res) => {
+    var statusValue = JSON.parse(req.body.statusbutton);
+    console.log(statusValue,statusValue.id);
+    if(statusValue.val == 1) {
+        console.log('accepted '+statusValue.id);
+        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "accepted"}}, (err,res) => {
+            console.log('updated successfully');
+        });
+    }else{
+        console.log('rejected '+statusValue.id);
+        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "rejected"}}, (err,res) => {
+            console.log('updated successfully');
+        });
+    }
+    res.redirect('/profile');
 });
 
 app.listen(3000,() => {

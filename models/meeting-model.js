@@ -6,7 +6,7 @@ const meetingSchema = new Schema({
     user1: String,
     user2: String,
     time: Date,
-    accepted: Boolean
+    status: String
 });
 
 const Meeting = mongoose.model('meeting',meetingSchema);

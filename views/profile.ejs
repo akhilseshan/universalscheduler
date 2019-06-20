@@ -9,7 +9,7 @@
 <body>
     <nav>
         <ul>
-            <% if (user) { %>
+            <% if (user.user_details) { %>
             <li><a href="/auth/logout">Log out</a></li>
             <% } else { %>
             <li><a href="/auth/login">Login</a></li>
@@ -18,11 +18,104 @@
             <li><a href="/profile">Profile</a></li>
         </ul>
     </nav>
-    <h1>Welcome to your profile, <%= user.username %></h1>
+    <h1>Welcome to your profile, <%= user.user_details.username %></h1>
     <form action="/addmeeting" method="POST">
         <input type="email" name="user2" placeholder="Enter the e-mail id">
         <input type="submit" name="submit">
     </form>
+    <div>
+        <div>
+            <table>Active Requests
+                <thead>
+                    <tr>
+                        <th>Unique Meeting Id</th>
+                        <th>User1</th>
+                        <th>User2</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<user.meeting_count;i++) { %>
+                    <% if(user.meeting_details[i].status == "pending" && user.meeting_details[i].user2 == user.user_details.emailId) { %>
+                    <tr>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i]._id %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].user1 %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].user2 %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].time %>
+                            </p>
+                        </td>
+                        <td>
+                            <form action="/updatemeeting" method="POST">
+                                <button type="submit" name="statusbutton" value='{"id": "<%= user.meeting_details[i]._id %>" , "val": 1}'>Accept</button>
+                                <button type="submit" name="statusbutton" value='{"id": "<%= user.meeting_details[i]._id %>" , "val": 0}'>Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <div>
+            <table>Past Meetings
+                <thead>
+                    <tr>
+                        <th>Unique Meeting Id</th>
+                        <th>User1</th>
+                        <th>User2</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<user.meeting_count;i++) { %>
+                    <% if(user.meeting_details[i].status != "pending") { %>
+                    <tr>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i]._id %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].user1 %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].user2 %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].time %>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].status %>
+                            </p>
+                        </td>
+                    </tr>
+                    <% } } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
