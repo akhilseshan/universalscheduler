@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const meetingSchema = new Schema({
     user1: String,
     user2: String,
-    time: Date,
+    startTime: Date,
+    endTime: Date,
     status: String
 });
 

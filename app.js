@@ -53,7 +53,8 @@ app.post('/addmeeting',(req,res) => {
     new Meeting({
         user1: localuser1,
         user2: localuser2,
-        time: localtime,
+        startTime: localtime,
+        endTime: localtime,
         status: "pending"
     }).save().then((newMeeting) => {
         //created new meeting
@@ -67,16 +68,22 @@ app.post('/addmeeting',(req,res) => {
 app.post('/updatemeeting',(req,res) => {
     //get the value from form in the html page
     var statusValue = JSON.parse(req.body.statusbutton);
+    var st = new Date();
     if(statusValue.val == 1) {
         //if the user press accept button
         console.log('accepted '+statusValue.id);
-        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "accepted"}}, (err,res) => {
+        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "accepted", startTime: st}}, (err,res) => {
             console.log('updated successfully');
         });
-    }else{
+    }else if(statusValue.val == 0){
         //if the user press reject button
         console.log('rejected '+statusValue.id);
-        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "rejected"}}, (err,res) => {
+        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "rejected", startTime: st, endTime: st}}, (err,res) => {
+            console.log('updated successfully');
+        });
+    }else if(statusValue.val == 2){
+        console.log('stopped' +statusValue.id);
+        Meeting.updateOne({_id: statusValue.id}, {$set: {status: "completed", endTime: st}}, (err,res) => {
             console.log('updated successfully');
         });
     }
