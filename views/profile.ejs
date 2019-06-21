@@ -4,9 +4,39 @@
 <head>
     <meta charset="utf-8">
     <title>Universal Scheduler</title>
+    <!-- function to add the clock to the page and refresh page every 5s-->
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('clock').innerHTML =
+                "current time:" + h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }; // add zero in front of numbers < 10
+            return i;
+        }
+
+        function timedRefresh(timeoutPeriod) {
+	        setTimeout("location.reload(true);",timeoutPeriod);
+        }
+
+        window.onload = timedRefresh(5000);
+
+    </script>
 </head>
 
-<body>
+<body onload="startTime()">
+    <h2 id="clock"></h2>
     <nav>
         <ul>
             <% if (user.user_details) { %>
@@ -23,6 +53,7 @@
         <input type="email" name="user2" placeholder="Enter the e-mail id">
         <input type="submit" name="submit">
     </form>
+    <!-- display the active requests -->
     <div>
         <div>
             <table>
@@ -61,6 +92,7 @@
                             </p>
                         </td>
                         <% if(user.meeting_details[i].status == "pending") { %>
+                        <!-- accept and reject buttons -->
                         <% if(user.meeting_details[i].user2 == user.user_details.emailId) { %>
                         <td>
                             <form action="/updatemeeting" method="POST">
@@ -78,6 +110,7 @@
                         </td>
                         <% } %>
                         <%} else { %>
+                        <!-- stop meeting button -->
                         <td>
                             <form action="/updatemeeting" method="POST">
                                 <button type="submit" name="statusbutton"
@@ -92,6 +125,7 @@
             </table>
         </div>
     </div>
+    <!-- display the past meetings -->
     <div>
         <div>
             <table>
