@@ -25,18 +25,19 @@
     </form>
     <div>
         <div>
-            <table>Active Requests
+            <table><h2>Active Requests</h2>
                 <thead>
                     <tr>
                         <th>Unique Meeting Id</th>
                         <th>User1</th>
                         <th>User2</th>
                         <th>Time</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% for(var i=0; i<user.meeting_count;i++) { %>
-                    <% if(user.meeting_details[i].status == "pending" && user.meeting_details[i].user2 == user.user_details.emailId) { %>
+                    <% if(user.meeting_details[i].status == "pending") { %>
                     <tr>
                         <td>
                             <p>
@@ -58,12 +59,20 @@
                                 <%= user.meeting_details[i].time %>
                             </p>
                         </td>
+                        <% if(user.meeting_details[i].user2 == user.user_details.emailId) { %>
                         <td>
                             <form action="/updatemeeting" method="POST">
                                 <button type="submit" name="statusbutton" value='{"id": "<%= user.meeting_details[i]._id %>" , "val": 1}'>Accept</button>
                                 <button type="submit" name="statusbutton" value='{"id": "<%= user.meeting_details[i]._id %>" , "val": 0}'>Reject</button>
                             </form>
                         </td>
+                        <% } else if(user.meeting_details[i].user1 == user.user_details.emailId) { %>
+                        <td>
+                            <p>
+                                <%= user.meeting_details[i].status %>
+                            </p>
+                        </td>
+                        <% } %>
                     </tr>
                     <% } } %>
                 </tbody>
@@ -72,13 +81,14 @@
     </div>
     <div>
         <div>
-            <table>Past Meetings
+            <table><h2>Past Meetings</h2>
                 <thead>
                     <tr>
                         <th>Unique Meeting Id</th>
                         <th>User1</th>
                         <th>User2</th>
                         <th>Time</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
