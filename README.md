@@ -1,8 +1,8 @@
 # Universal Scheduler
 
-### A web-app that allows users to create meetings by inviting any other using their email ids. The other user will be able either accept or reject the meeting. The web-app also shows the history of the past meetings between those two users.
+### A web-app that allows users to create meetings by inviting any other using their email ids. The other user will be able either accept or reject the meeting. The web-app also shows the history of the past meetings between those two users. The users will be able to see the active time of the meeting and cancel started meetings.
 
-### Testing
+## Testing
 
 Create a file keys.js in /config and include these details to the keys.js file. (PS: changes are be made in your Google API Console that includes the authorised redirect URL and authorised Javascript URL)
 
